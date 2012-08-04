@@ -1,0 +1,7 @@
+*.user
+*.suo
+SteamLauncher/_ReSharper.SteamLauncher
+SteamLauncher/_ReSharper.SteamLauncher/*
+SteamLauncher/bin/*
+SteamLauncher/obj/*
+SteamLauncher/obj
