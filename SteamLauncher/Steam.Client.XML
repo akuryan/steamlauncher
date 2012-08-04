@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<steam>
+  <computer>
+    <computername>bylectric-ak</computername>
+    <steamlogin>test</steamlogin>
+    <steampassword>test</steampassword>
+    <apps>
+      <app Id="1" name="civ" launch="steam:'-applaunch 8930 \dx11'" parameters="" />
+      <app Id="2" name="skyrim" launch="steam://rungameid/72850'" parameters="" />
+      <app Id="3" name="alienswarm" launch="steam://rungameid/630'" parameters="" />
+    </apps>
+    <recovery>
+      <email>test</email>
+      <password></password>
+    </recovery>
+  </computer>
+</steam>
