@@ -9,9 +9,18 @@ namespace XMLCreator
 {
     class Program
     {
+        public static Dictionary<string, List<string>> globalAppsDictionary = new Dictionary<string, List<string>>();
+        public static bool isGlobalAppsDefined = false;
+        public static int globalApps = 0;
         static void Main(string[] args)
         {
             string xmlPath = ConfigurationManager.AppSettings["XML Paths"].ToLower();
+            globalApps = ConsoleInputIntReader("global apps for all computers(users)");
+            if (globalApps != 0)
+            {
+                isGlobalAppsDefined = true;
+                GlobalAppsDicitonaryFiller(globalAppsDictionary);
+            }
             GenerateXML(xmlPath);
         }
 
@@ -29,18 +38,18 @@ namespace XMLCreator
             XmlDocument doc = new XmlDocument();
             XmlNode xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
             doc.AppendChild(xmlDeclaration);
-            
+
             XmlNode steamNode = doc.CreateElement("steam");
             doc.AppendChild(steamNode);
             computersCount = ConsoleInputIntReader("computers(users)");
-            
-            while(enteredComputers <= computersCount)
+
+            while (enteredComputers <= computersCount)
             {
                 int enteredAppsCount = 1;
                 XmlNode computerNode = doc.CreateElement("computer");
                 steamNode.AppendChild(computerNode);
 
-                computerName = ConsoleInputStringReader("computer name (username)","computer(user)", enteredComputers, false);
+                computerName = ConsoleInputStringReader("computer name (username)", "computer(user)", enteredComputers, false);
                 steamLogin = ConsoleInputStringReader("steam login name", "computer(user)", enteredComputers, false);
                 steamPassword = ConsoleInputStringReader("steam password", "computer(user)", enteredComputers, false);
 
@@ -50,9 +59,22 @@ namespace XMLCreator
 
 
                 XmlNode appsNode = doc.CreateElement("apps");
+                if (isGlobalAppsDefined)
+                {
+                    for (int i = 1; i <= globalApps; i++)
+                    {
+                        for (int c = 1; c <= globalApps; c++)
+                        {
+                            foreach (KeyValuePair<string, List<string>> keyValuePair in globalAppsDictionary)
+                            {
+                                
+                            }
+                        }
+                    }
 
+                }
                 appsCount = ConsoleInputIntReader("apps");
-                while (enteredAppsCount<=appsCount)
+                while (enteredAppsCount <= appsCount)
                 {
                     DictionaryFiller(dictionary, "id", Convert.ToString(enteredAppsCount));
                     DictionaryFiller(dictionary, "name", ConsoleInputStringReader("application name", "application", enteredAppsCount, false));
@@ -101,13 +123,13 @@ namespace XMLCreator
             return doc;
         }
 
-        public static Dictionary<string, string> DictionaryFiller (Dictionary<string, string> dictionary, string key, string value)
+        public static Dictionary<string, string> DictionaryFiller(Dictionary<string, string> dictionary, string key, string value)
         {
             dictionary.Add(key, value);
             return dictionary;
         }
 
-        public static Dictionary<string, string> DictionaryEmptier (Dictionary<string, string> dictionary)
+        public static Dictionary<string, string> DictionaryEmptier(Dictionary<string, string> dictionary)
         {
             dictionary.Clear();
             return dictionary;
@@ -115,9 +137,9 @@ namespace XMLCreator
 
         public static string ConsoleInputStringReader(string firstMessageParameter, string secondMesaageparamer, int enteredComputers, bool allowEmptyStrings)
         {
-            Console.WriteLine("Enter {0} for {1} {2}:",firstMessageParameter, secondMesaageparamer, enteredComputers);
+            Console.WriteLine("Enter {0} for {1} {2}:", firstMessageParameter, secondMesaageparamer, enteredComputers);
             string inputString = Console.ReadLine();
-            if(allowEmptyStrings)
+            if (allowEmptyStrings)
             {
                 return inputString.ToLower();
             }
@@ -144,6 +166,26 @@ namespace XMLCreator
                 inputInt = ConsoleInputIntReader("computers(users)");
             }
             return inputInt;
+        }
+
+        public static Dictionary<string, List<string>> GlobalAppsDicitonaryFiller(Dictionary<string, List<string>> global)
+        {
+            List<string> ids = new List<string>();
+            List<string> names = new List<string>();
+            List<string> steamLaunchNumber = new List<string>();
+            List<string> steamLaunchParameters = new List<string>();
+            for (int i = 1; i <= globalApps; i++)
+            {
+                ids.Add("global" + Convert.ToString(i));
+                names.Add(ConsoleInputStringReader("enter global app name", "for global app", i, false));
+                steamLaunchNumber.Add(ConsoleInputStringReader("enter global app steam launch number", "global app " + names[i - 1], i, false));
+                steamLaunchParameters.Add(ConsoleInputStringReader("enter global app steam launch parameters", "global app " + names[i - 1], i, true));
+            }
+            global.Add("id", ids);
+            global.Add("name", names);
+            global.Add("launch", steamLaunchNumber);
+            global.Add("parameters", steamLaunchParameters);
+            return global;
         }
     }
 }
