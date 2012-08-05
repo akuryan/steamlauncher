@@ -40,9 +40,9 @@ namespace XMLCreator
                 XmlNode computerNode = doc.CreateElement("computer");
                 steamNode.AppendChild(computerNode);
 
-                computerName = ConsoleInputStringReader("computer name (username)","computer(user)", enteredComputers);
-                steamLogin = ConsoleInputStringReader("steam login name", "computer(user)", enteredComputers);
-                steamPassword = ConsoleInputStringReader("steam password", "computer(user)", enteredComputers);
+                computerName = ConsoleInputStringReader("computer name (username)","computer(user)", enteredComputers, false);
+                steamLogin = ConsoleInputStringReader("steam login name", "computer(user)", enteredComputers, false);
+                steamPassword = ConsoleInputStringReader("steam password", "computer(user)", enteredComputers, false);
 
                 XmlNodeWithText(doc, computerNode, "computername", computerName);
                 XmlNodeWithText(doc, computerNode, "steamlogin", steamLogin);
@@ -55,9 +55,9 @@ namespace XMLCreator
                 while (enteredAppsCount<=appsCount)
                 {
                     DictionaryFiller(dictionary, "id", Convert.ToString(enteredAppsCount));
-                    DictionaryFiller(dictionary, "name", ConsoleInputStringReader("application name", "application", enteredAppsCount));
-                    DictionaryFiller(dictionary, "launch", ConsoleInputStringReader("steam application number", dictionary["name"], enteredAppsCount));
-                    DictionaryFiller(dictionary, "parameters", ConsoleInputStringReader("steam launch parameters", dictionary["name"], enteredAppsCount));
+                    DictionaryFiller(dictionary, "name", ConsoleInputStringReader("application name", "application", enteredAppsCount, false));
+                    DictionaryFiller(dictionary, "launch", ConsoleInputStringReader("steam application number", dictionary["name"], enteredAppsCount, false));
+                    DictionaryFiller(dictionary, "parameters", ConsoleInputStringReader("steam launch parameters", dictionary["name"], enteredAppsCount, true));
                     XmlNodeWithAttributes(doc, appsNode, "app", dictionary);
                     DictionaryEmptier(dictionary);
                     enteredAppsCount = enteredAppsCount + 1;
@@ -67,8 +67,8 @@ namespace XMLCreator
                 computerNode.AppendChild(appsNode);
 
                 XmlNode recoveryNode = doc.CreateElement("recovery");
-                recoveryEmail = ConsoleInputStringReader("recovery email", "computer(user)", enteredComputers);
-                recoveryEmailPassword = ConsoleInputStringReader("recovery email password", "computer(user)", enteredComputers);
+                recoveryEmail = ConsoleInputStringReader("recovery email", "computer(user)", enteredComputers, true);
+                recoveryEmailPassword = ConsoleInputStringReader("recovery email password", "computer(user)", enteredComputers, true);
                 XmlNodeWithText(doc, recoveryNode, "email", recoveryEmail);
                 XmlNodeWithText(doc, recoveryNode, "password", recoveryEmailPassword);
 
@@ -113,14 +113,18 @@ namespace XMLCreator
             return dictionary;
         }
 
-        public static string ConsoleInputStringReader(string firstMessageParameter, string secondMesaageparamer, int enteredComputers)
+        public static string ConsoleInputStringReader(string firstMessageParameter, string secondMesaageparamer, int enteredComputers, bool allowEmptyStrings)
         {
             Console.WriteLine("Enter {0} for {1} {2}:",firstMessageParameter, secondMesaageparamer, enteredComputers);
             string inputString = Console.ReadLine();
+            if(allowEmptyStrings)
+            {
+                return inputString.ToLower();
+            }
             if (inputString == string.Empty)
             {
                 Console.WriteLine("Tou've entered empty {0}, please retry", firstMessageParameter);
-                inputString = ConsoleInputStringReader(firstMessageParameter, secondMesaageparamer, enteredComputers);
+                inputString = ConsoleInputStringReader(firstMessageParameter, secondMesaageparamer, enteredComputers, false);
             }
 
             return inputString.ToLower();
