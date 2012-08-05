@@ -20,53 +20,29 @@ namespace XMLCreator
             Dictionary<string, string> dictionary = new Dictionary<string, string>();
             int computersCount = 0;
             int enteredComputers = 1;
+            int appsCount = 0;
             string computerName = string.Empty;
             string steamLogin = string.Empty;
             string steamPassword = string.Empty;
+            string recoveryEmail = string.Empty;
+            string recoveryEmailPassword = string.Empty;
             XmlDocument doc = new XmlDocument();
             XmlNode xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
             doc.AppendChild(xmlDeclaration);
             
             XmlNode steamNode = doc.CreateElement("steam");
             doc.AppendChild(steamNode);
-            Console.WriteLine("How much computers you want to create (number please):");
-            string computersCountString = Console.ReadLine();
-            try
-            {
-                computersCount = Convert.ToInt32(computersCountString);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("You have not entered number");
-                Environment.Exit(-1);
-            }
-
+            computersCount = ConsoleInputIntReader("computers(users)");
+            
             while(enteredComputers <= computersCount)
             {
+                int enteredAppsCount = 1;
                 XmlNode computerNode = doc.CreateElement("computer");
                 steamNode.AppendChild(computerNode);
 
-                Console.WriteLine("Enter computer name for computer {0}:", enteredComputers);
-                computerName = Console.ReadLine();
-                if(computerName == string.Empty)
-                {
-                    Console.WriteLine("Tou've entered empty computername, please start over");
-                    Environment.Exit(-1);
-                }
-                Console.WriteLine("Enter steam login name for computer {0}:", enteredComputers);
-                steamLogin = Console.ReadLine();
-                if (steamLogin == string.Empty)
-                {
-                    Console.WriteLine("Tou've entered empty steam login, please start over");
-                    Environment.Exit(-1);
-                }
-                Console.WriteLine("Enter steam password for computer {0}", enteredComputers);
-                steamPassword = Console.ReadLine();
-                if (steamPassword == string.Empty)
-                {
-                    Console.WriteLine("Tou've entered empty steam password, please start over");
-                    Environment.Exit(-1);
-                }
+                computerName = ConsoleInputStringReader("computer name (username)","computer(user)", enteredComputers);
+                steamLogin = ConsoleInputStringReader("steam login name", "computer(user)", enteredComputers);
+                steamPassword = ConsoleInputStringReader("steam password", "computer(user)", enteredComputers);
 
                 XmlNodeWithText(doc, computerNode, "computername", computerName);
                 XmlNodeWithText(doc, computerNode, "steamlogin", steamLogin);
@@ -75,19 +51,26 @@ namespace XMLCreator
 
                 XmlNode appsNode = doc.CreateElement("apps");
 
-                DictionaryFiller(dictionary, "id", "01");
-                DictionaryFiller(dictionary, "name", "alienswarm");
-                DictionaryFiller(dictionary, "launch", "630");
-                DictionaryFiller(dictionary, "parameters", "");
+                appsCount = ConsoleInputIntReader("apps");
+                while (enteredAppsCount<=appsCount)
+                {
+                    DictionaryFiller(dictionary, "id", Convert.ToString(enteredAppsCount));
+                    DictionaryFiller(dictionary, "name", ConsoleInputStringReader("application name", "application", enteredAppsCount));
+                    DictionaryFiller(dictionary, "launch", ConsoleInputStringReader("steam application number", dictionary["name"], enteredAppsCount));
+                    DictionaryFiller(dictionary, "parameters", ConsoleInputStringReader("steam launch parameters", dictionary["name"], enteredAppsCount));
+                    XmlNodeWithAttributes(doc, appsNode, "app", dictionary);
+                    DictionaryEmptier(dictionary);
+                    enteredAppsCount = enteredAppsCount + 1;
+                }
 
-                XmlNodeWithAttributes(doc, appsNode, "app", dictionary);
-                DictionaryEmptier(dictionary);
 
                 computerNode.AppendChild(appsNode);
 
                 XmlNode recoveryNode = doc.CreateElement("recovery");
-                XmlNodeWithText(doc, recoveryNode, "email", "test@te.te");
-                XmlNodeWithText(doc, recoveryNode, "password", "test@te.te");
+                recoveryEmail = ConsoleInputStringReader("recovery email", "computer(user)", enteredComputers);
+                recoveryEmailPassword = ConsoleInputStringReader("recovery email password", "computer(user)", enteredComputers);
+                XmlNodeWithText(doc, recoveryNode, "email", recoveryEmail);
+                XmlNodeWithText(doc, recoveryNode, "password", recoveryEmailPassword);
 
                 computerNode.AppendChild(recoveryNode);
                 enteredComputers = enteredComputers + 1;
@@ -128,6 +111,35 @@ namespace XMLCreator
         {
             dictionary.Clear();
             return dictionary;
+        }
+
+        public static string ConsoleInputStringReader(string firstMessageParameter, string secondMesaageparamer, int enteredComputers)
+        {
+            Console.WriteLine("Enter {0} for {1} {2}:",firstMessageParameter, secondMesaageparamer, enteredComputers);
+            string inputString = Console.ReadLine();
+            if (inputString == string.Empty)
+            {
+                Console.WriteLine("Tou've entered empty {0}, please retry", firstMessageParameter);
+                inputString = ConsoleInputStringReader(firstMessageParameter, secondMesaageparamer, enteredComputers);
+            }
+
+            return inputString.ToLower();
+        }
+
+        public static int ConsoleInputIntReader(string firstMessageParameter)
+        {
+            int inputInt;
+            Console.WriteLine("How much {0} you want to create (number please):", firstMessageParameter);
+            try
+            {
+                inputInt = Convert.ToInt32(Console.ReadLine());
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("You've entered not number");
+                inputInt = ConsoleInputIntReader("computers(users)");
+            }
+            return inputInt;
         }
     }
 }
