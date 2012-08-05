@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamLauncher", "SteamLauncher.csproj", "{F839229C-EB39-4AF0-B9B8-635796429868}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamLauncher", "SteamLauncher\SteamLauncher.csproj", "{F839229C-EB39-4AF0-B9B8-635796429868}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLCreator", "..\XMLCreator\XMLCreator.csproj", "{6A7476D5-E56F-42D8-9711-EBFF11ED8FE7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLCreator", "XMLCreator\XMLCreator.csproj", "{6A7476D5-E56F-42D8-9711-EBFF11ED8FE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
