@@ -19,11 +19,12 @@ namespace SteamLauncher
                 Environment.Exit(2);
                 return;
             }
-            if (args.Length != 1)
+            if (args.Length != 2)
             {
                 Console.WriteLine("You've specified insufficient parameters");
                 Console.WriteLine("Please, specify following parameters:");
                 Console.WriteLine("App you want to launch (name)");
+                Console.WriteLine("Username as stored in computername node of xml");
                 Environment.Exit(2);
                 return;
             }
@@ -31,16 +32,7 @@ namespace SteamLauncher
             string steamWorkingFolder = ConfigurationManager.AppSettings["Steam FOlder Path"].ToLower();
             string xmlPath = ConfigurationManager.AppSettings["XML Paths"].ToLower();
             string appName = args[0].ToLower();
-            string computerName = "";
-            try
-            {
-                computerName = System.Environment.GetEnvironmentVariable("COMPUTERNAME").ToLower();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Exception occured while getting computername ", ex);
-                Environment.Exit(-1);
-            }
+            string computerName = args[1].ToLower();
             if (computerName != "")
             {
                 Program p = new Program(steamPath, xmlPath, appName, computerName, steamWorkingFolder);
