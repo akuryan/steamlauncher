@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Configuration;
 using System.Xml;
 
@@ -12,6 +10,7 @@ namespace XMLCreator
         public static Dictionary<string, List<string>> globalAppsDictionary = new Dictionary<string, List<string>>();
         public static bool isGlobalAppsDefined = false;
         public static int globalApps = 0;
+
         static void Main(string[] args)
         {
             string xmlPath = ConfigurationManager.AppSettings["XML Paths"].ToLower();
