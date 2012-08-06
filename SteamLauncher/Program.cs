@@ -39,7 +39,7 @@ namespace SteamLauncher
             }
             else
             {
-                Console.WriteLine("ComputerName is empty ");
+                Console.WriteLine("ComputerName(username) is empty");
                 Environment.Exit(-1);
             }
 

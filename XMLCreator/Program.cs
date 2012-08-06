@@ -61,17 +61,15 @@ namespace XMLCreator
                 XmlNode appsNode = doc.CreateElement("apps");
                 if (isGlobalAppsDefined)
                 {
-                    for (int i = 1; i <= globalApps; i++)
+                    for (int i = 0; i < globalApps; i++)
                     {
-                        for (int c = 1; c <= globalApps; c++)
+                        foreach (KeyValuePair<string, List<string>> keyValuePair in globalAppsDictionary)
                         {
-                            foreach (KeyValuePair<string, List<string>> keyValuePair in globalAppsDictionary)
-                            {
-                                
-                            }
+                            DictionaryFiller(dictionary, keyValuePair.Key, keyValuePair.Value[i]);
                         }
+                        XmlNodeWithAttributes(doc, appsNode, "app", dictionary);
+                        DictionaryEmptier(dictionary);
                     }
-
                 }
                 appsCount = ConsoleInputIntReader("apps");
                 while (enteredAppsCount <= appsCount)
@@ -141,7 +139,7 @@ namespace XMLCreator
             string inputString = Console.ReadLine();
             if (allowEmptyStrings)
             {
-                return inputString.ToLower();
+                return inputString;
             }
             if (inputString == string.Empty)
             {
@@ -149,7 +147,7 @@ namespace XMLCreator
                 inputString = ConsoleInputStringReader(firstMessageParameter, secondMesaageparamer, enteredComputers, false);
             }
 
-            return inputString.ToLower();
+            return inputString;
         }
 
         public static int ConsoleInputIntReader(string firstMessageParameter)
