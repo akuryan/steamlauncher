@@ -15,12 +15,8 @@ namespace XMLCreator
         static void Main(string[] args)
         {
             string xmlPath = ConfigurationManager.AppSettings["XML Paths"].ToLower();
-            globalApps = ConsoleInputIntReader("global apps for all computers(users)");
-            if (globalApps != 0)
-            {
-                isGlobalAppsDefined = true;
-                GlobalAppsDicitonaryFiller(globalAppsDictionary);
-            }
+
+            GlobalAppsDefiner();
             GenerateXML(xmlPath);
         }
 
@@ -184,6 +180,16 @@ namespace XMLCreator
             global.Add("launch", steamLaunchNumber);
             global.Add("parameters", steamLaunchParameters);
             return global;
+        }
+
+        public static void GlobalAppsDefiner()
+        {
+            globalApps = ConsoleInputIntReader("global apps for all computers(users)");
+            if (globalApps != 0)
+            {
+                isGlobalAppsDefined = true;
+                GlobalAppsDicitonaryFiller(globalAppsDictionary);
+            }
         }
     }
 }
