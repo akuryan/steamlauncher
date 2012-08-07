@@ -18,7 +18,7 @@ namespace XMLCreator
 
         static void Main(string[] args)
         {
-            string xmlPath = ConfigurationManager.AppSettings["XML Paths"].ToLower();
+            string xmlPath = ConfigurationManager.AppSettings["XML Path"].ToLower();
 
             GlobalAppsDefiner();
             GenerateXML(xmlPath);
