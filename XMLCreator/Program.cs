@@ -100,6 +100,19 @@ namespace XMLCreator
 
 
             doc.Save(xmlPath);
+            Console.WriteLine("Encrypted XML path would be saved to path.txt");
+            Console.WriteLine("If you want to use it - store in app.config of SteamLauncher.exe, and set value of IsXMLPathEncrypted to true");
+            Console.WriteLine("Press any key to continue.");
+            FileStream fs = new FileStream("path.txt", FileMode.Create);
+            TextWriter tmp = Console.Out;
+            StreamWriter sw = new StreamWriter(fs);
+            Console.SetOut(sw);
+            Console.WriteLine("Encrypted XML path is: {0}", EncryptStringAES(xmlPath, encryptionPassword));
+            Console.SetOut(tmp);
+            Console.WriteLine("Encrypted XML path is: {0}", EncryptStringAES(xmlPath, encryptionPassword));
+            sw.Close();
+            Console.ReadLine();
+            Environment.Exit(1);
         }
 
         public static XmlDocument XmlNodeWithText(XmlDocument doc, XmlNode parentNode, string nodeName, string nodeText)

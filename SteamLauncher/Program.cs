@@ -36,7 +36,9 @@ namespace SteamLauncher
             }
             string steamPath = ConfigurationManager.AppSettings["Steam.exe Path"].ToLower();
             string steamWorkingFolder = ConfigurationManager.AppSettings["Steam Folder Path"].ToLower();
-            string xmlPath = ConfigurationManager.AppSettings["XML Paths"].ToLower();
+            string xmlPath;
+            xmlPath = ConfigurationManager.AppSettings["IsXMLPathEncrypted"] == "true" ? DecryptStringAES(ConfigurationManager.AppSettings["XML Path"], encryptionPassword).ToLower() : ConfigurationManager.AppSettings["XML Path"].ToLower();
+            
             string appName = args[0].ToLower();
             string computerName = args[1].ToLower();
             if (computerName != "")
